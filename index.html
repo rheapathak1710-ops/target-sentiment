@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Target Corp ($TGT) — Reddit Sentiment Signal</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f1117;color:#e2e8f0;min-height:100vh;padding:24px 16px}
+  .container{max-width:960px;margin:0 auto}
+  .header{background:#1a1f2e;border:1px solid #2d3748;border-radius:12px;padding:20px 24px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .header-title{font-size:18px;font-weight:600;color:#f7fafc}
+  .header-sub{font-size:12px;color:#718096;margin-top:4px}
+  .badge{display:inline-block;font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;background:#1a365d;color:#63b3ed}
+  .stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .stat-card{background:#1a1f2e;border:1px solid #2d3748;border-radius:10px;padding:14px 16px;flex:1;min-width:120px}
+  .stat-label{font-size:10px;color:#718096;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px}
+  .stat-val{font-size:22px;font-weight:600}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+  .card{background:#1a1f2e;border:1px solid #2d3748;border-radius:12px;padding:16px}
+  .card-title{font-size:13px;font-weight:500;color:#a0aec0;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.04em}
+  .bar-bg{background:#2d3748;border-radius:4px;height:8px;overflow:hidden;margin-top:3px}
+  .bar-fill{height:8px;border-radius:4px}
+  .theme-row{margin-bottom:11px}
+  .theme-label{display:flex;justify-content:space-between;font-size:12px;color:#a0aec0;margin-bottom:3px}
+  .chart-wrap{position:relative;height:220px}
+  .full-card{background:#1a1f2e;border:1px solid #2d3748;border-radius:12px;padding:16px;margin-bottom:16px}
+  .corr-box{background:#2d3748;border-radius:8px;padding:11px 14px;margin-top:12px;font-size:12px;color:#a0aec0;line-height:1.6}
+  .corr-box strong{color:#f7fafc}
+  .legend{display:flex;gap:18px;font-size:12px;color:#718096;margin-bottom:12px;flex-wrap:wrap}
+  .legend span{display:flex;align-items:center;gap:5px}
+  .legend-line{width:22px;height:2px;display:inline-block}
+  .legend-dash{width:22px;height:0;border-top:2px dashed #378ADD;display:inline-block}
+  .post-card{background:#2d3748;border-radius:8px;padding:11px 14px;margin-bottom:8px;border-left:3px solid #4a5568}
+  .post-card.negative{border-left-color:#fc8181}
+  .post-card.positive{border-left-color:#68d391}
+  .post-card.neutral{border-left-color:#718096}
+  .post-text{font-size:12px;color:#e2e8f0;line-height:1.6;margin-bottom:6px}
+  .post-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .pill{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px}
+  .pill.negative{background:#2d1515;color:#fc8181}
+  .pill.positive{background:#1a2e1a;color:#68d391}
+  .pill.neutral{background:#2d3748;color:#a0aec0}
+  .sig-tag{font-size:10px;background:#1a1f2e;color:#718096;padding:1px 7px;border-radius:20px}
+  .post-date{font-size:10px;color:#4a5568}
+  .post-theme{font-size:10px;color:#718096;font-style:italic}
+  .insight-box{background:#1a1f2e;border:1px solid #2d3748;border-radius:12px;padding:16px;margin-bottom:16px}
+  .insight{background:#2d3748;border-radius:8px;padding:11px 14px;margin-bottom:8px;font-size:12px;color:#a0aec0;line-height:1.6;display:flex;gap:10px}
+  .insight strong{color:#f7fafc}
+  .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+  .footer{text-align:center;font-size:11px;color:#4a5568;padding:20px 0 8px}
+  @media(max-width:600px){.grid{grid-template-columns:1fr}.stats{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div>
+      <div class="header-title">Target Corp ($TGT) — Reddit Sentiment Signal</div>
+      <div class="header-sub">457 posts classified · r/Target + r/targetemployees · Real $TGT prices from MacroTrends · 2022–2026</div>
+    </div>
+    <span class="badge">Alternative Data Project</span>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card"><div class="stat-label">Posts classified</div><div class="stat-val" style="color:#f7fafc">457</div></div>
+    <div class="stat-card"><div class="stat-label">Negative</div><div class="stat-val" style="color:#fc8181">121 <span style="font-size:14px">(26%)</span></div></div>
+    <div class="stat-card"><div class="stat-label">Positive</div><div class="stat-val" style="color:#68d391">69 <span style="font-size:14px">(15%)</span></div></div>
+    <div class="stat-card"><div class="stat-label">Pearson r</div><div class="stat-val" style="color:#f6ad55">−0.198</div></div>
+    <div class="stat-card"><div class="stat-label">Signal</div><div class="stat-val" style="color:#f6ad55;font-size:16px">CAUTION</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-title">Sentiment breakdown</div>
+      <div style="position:relative;height:185px"><canvas id="pie" aria-label="26% negative, 15% positive, 58% neutral"></canvas></div>
+      <div style="display:flex;gap:12px;justify-content:center;margin-top:12px;font-size:12px;color:#718096;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#fc8181;display:inline-block"></span>Negative 26%</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#68d391;display:inline-block"></span>Positive 15%</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#718096;display:inline-block"></span>Neutral 58%</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Complaint themes</div>
+      <div id="themes"></div>
+    </div>
+  </div>
+
+  <div class="full-card">
+    <div class="card-title">Negative sentiment vs real $TGT price — weekly</div>
+    <div class="legend">
+      <span><span class="legend-line" style="background:#fc8181"></span>Reddit neg. sentiment %</span>
+      <span><span class="legend-dash"></span>$TGT real closing price</span>
+    </div>
+    <div class="chart-wrap"><canvas id="trend" aria-label="Weekly negative sentiment vs TGT stock price"></canvas></div>
+    <div class="corr-box">
+      <strong>Pearson r = −0.198</strong> (11 matched weeks, real $TGT prices) — a negative correlation: weeks with higher Reddit negativity coincide with lower $TGT prices. Expanding the dataset with more historical posts would strengthen this signal further.
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <div class="card-title">Key analyst insights</div>
+    <div class="insight"><div class="dot" style="background:#fc8181"></div><div><strong>Management pressure on Circle card sales is the top negative driver.</strong> Multiple posts describe employees threatened with termination for failing individual credit card sign-up quotas — a documented employee relations risk that surfaced prominently in 2024.</div></div>
+    <div class="insight"><div class="dot" style="background:#f6ad55"></div><div><strong>Staffing complaints are structural, not episodic.</strong> "Skeleton crew," "hour cuts," and "short staffed" appear across posts from 2022 through 2026, suggesting a persistent operational issue rather than a one-off event.</div></div>
+    <div class="insight"><div class="dot" style="background:#f6ad55"></div><div><strong>Pricing sentiment is a growing theme.</strong> Posts explicitly comparing Target prices unfavourably to Walmart and describing inability to afford regular shopping appeared more in 2024–2026 — consistent with $TGT's weakening consumer sentiment period.</div></div>
+    <div class="insight"><div class="dot" style="background:#68d391"></div><div><strong>Positive signal: community and teamwork stories persist.</strong> 15% of posts reflect genuine pride in coworker relationships and customer service moments — a floor of positive culture that traditional institutional sentiment models often miss.</div></div>
+  </div>
+
+  <div class="full-card">
+    <div class="card-title">Sample classified posts — real Reddit data</div>
+    <div id="feed"></div>
+  </div>
+
+  <div class="footer">Built by rheapathak1710-ops · Data: r/Target, r/targetemployees (Apify) + MacroTrends $TGT · Sentiment: Claude AI · 2026</div>
+
+</div>
+<script>
+new Chart(document.getElementById('pie'),{
+  type:'doughnut',
+  data:{labels:['Negative','Positive','Neutral'],datasets:[{data:[121,69,267],backgroundColor:['#fc8181','#68d391','#718096'],borderWidth:0}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'62%'}
+});
+
+const THEMES=[
+  {name:'Store experience',pct:49,color:'#4299e1'},
+  {name:'Management',pct:26,color:'#fc8181'},
+  {name:'Inventory',pct:14,color:'#f6ad55'},
+  {name:'Staffing & hours',pct:13,color:'#b794f4'},
+  {name:'Pay & benefits',pct:6,color:'#76e4f7'},
+  {name:'Pricing',pct:2,color:'#f687b3'},
+];
+document.getElementById('themes').innerHTML=THEMES.map(t=>`
+  <div class="theme-row">
+    <div class="theme-label"><span>${t.name}</span><span>${t.pct}%</span></div>
+    <div class="bar-bg"><div class="bar-fill" style="width:${Math.round(100*t.pct/49)}%;background:${t.color}"></div></div>
+  </div>`).join('');
+
+const WEEKS=["Aug '22","Dec '23","Apr '24","Jun '24","Jun '24","Jun '24","Jul '24","Jul '24","Oct '24","Mar '26","May '26"];
+const NEG=[0,33,50,0,0,100,0,100,0,50,25];
+const PRICE=[147.25,129.60,156.27,137.30,134.58,133.46,138.16,135.32,143.41,117.44,126.88];
+
+new Chart(document.getElementById('trend'),{
+  type:'line',
+  data:{labels:WEEKS,datasets:[
+    {label:'Neg sentiment %',data:NEG,yAxisID:'y',borderColor:'#fc8181',backgroundColor:'rgba(252,129,129,0.08)',tension:0.4,pointRadius:5,pointHoverRadius:7,borderWidth:2},
+    {label:'$TGT price',data:PRICE,yAxisID:'y2',borderColor:'#63b3ed',backgroundColor:'rgba(99,179,237,0.05)',tension:0.4,pointRadius:5,pointHoverRadius:7,borderWidth:2,borderDash:[5,3]}
+  ]},
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1f2e',borderColor:'#2d3748',borderWidth:1,callbacks:{label:ctx=>ctx.datasetIndex===0?'Neg sentiment: '+ctx.raw+'%':'$TGT: $'+ctx.raw}}},
+    scales:{
+      x:{ticks:{color:'#718096',font:{size:10}},grid:{color:'rgba(255,255,255,0.04)'}},
+      y:{type:'linear',position:'left',min:0,max:110,ticks:{callback:v=>v+'%',color:'#718096',font:{size:10}},grid:{color:'rgba(255,255,255,0.04)'},title:{display:true,text:'Neg. sentiment %',color:'#718096',font:{size:10}}},
+      y2:{type:'linear',position:'right',min:100,max:175,ticks:{callback:v=>'$'+v,color:'#718096',font:{size:10}},grid:{drawOnChartArea:false},title:{display:true,text:'$TGT price',color:'#718096',font:{size:10}}}
+    }
+  }
+});
+
+const POSTS=[
+  {label:'negative',date:'2024-06-22',text:'Team members may start getting fired for lack of Circle card sign ups. Corporate is going to enforce individual weekly goals and let people go.',themes:'Management · Customer service',signals:['fired','weekly goals']},
+  {label:'negative',date:'2024-08-30',text:'Cashiers at my store are getting harassed about not selling the red card. I don\'t believe in trapping people into credit card debt.',themes:'Management · Pay & benefits',signals:['harassed','credit card debt']},
+  {label:'negative',date:'2026-05-27',text:'They need to allocate more hours to stores. They make the stores run on skeleton crews, and then wonder why guests complain about the mess.',themes:'Staffing & hours · Store experience',signals:['skeleton crews','hour cuts']},
+  {label:'negative',date:'2026-05-27',text:'Target is a company that thrives off RETALIATION. The supervisor sets the example and leads start the retaliation on team members.',themes:'Management',signals:['retaliation','power trip']},
+  {label:'negative',date:'2026-05-27',text:'The reason I don\'t shop at Target is because it\'s too expensive. Even before I worked here my family couldn\'t afford it.',themes:'Pricing',signals:['expensive','can\'t afford']},
+  {label:'positive',date:'2026-05-27',text:'Me and a random teenage guest took 5 minutes going through my whole beauty section to help a little old lady find a product. Stories like this make the job worth it.',themes:'Store experience · Customer service',signals:['helped','worth it']},
+  {label:'positive',date:'2026-05-27',text:'Cross training is hugely important. Having my entire team trained everywhere does wonders for situations where someone can\'t make it in.',themes:'Staffing & hours',signals:['cross training','team']},
+  {label:'neutral',date:'2026-05-28',text:'Officially it\'s called "secondary sort" but every store has their own term. Most common are "de-trash" and "breakout".',themes:'Inventory',signals:[]},
+];
+
+document.getElementById('feed').innerHTML=POSTS.map(p=>`
+  <div class="post-card ${p.label}">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px">
+      <p class="post-text">"${p.text}"</p>
+      <span class="pill ${p.label}" style="white-space:nowrap;flex-shrink:0">${p.label}</span>
+    </div>
+    <div class="post-meta">
+      <span class="post-date">${p.date}</span>
+      ${p.signals.map(s=>`<span class="sig-tag">${s}</span>`).join('')}
+      <span class="post-theme">${p.themes}</span>
+    </div>
+  </div>`).join('');
+</script>
+</body>
+</html>
